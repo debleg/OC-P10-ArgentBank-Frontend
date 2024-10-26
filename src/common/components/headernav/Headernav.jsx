@@ -2,7 +2,7 @@ import Logo from "../logo/Logo";
 import "./headernav.css";
 import { NavLink } from "react-router-dom";
 
-const Header = () => {
+const Headernav = () => {
   return (
     <nav className="main-nav">
       <NavLink className="main-nav-logo" to="/">
@@ -18,4 +18,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default Headernav;
