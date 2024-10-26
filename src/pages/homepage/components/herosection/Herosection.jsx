@@ -1,20 +1,24 @@
-
-import "./herosection.css"
+import "./herosection.css";
 
 const Herosection = () => {
-    return (
-        
-<div className="hero">
-    <section className="hero-content">
+  const HeroSubtitles = [
+    "No fees.",
+    "No minimum deposit.",
+    "High interest rates.",
+  ];
+  return (
+    <div className="hero">
+      <section className="hero-content">
         <h2 className="sr-only">Promoted Content</h2>
-        <p className="subtitle">No fees.</p>
-        <p className="subtitle">No minimum deposit.</p>
-        <p className="subtitle">High interest rates.</p>
+        {HeroSubtitles.map((subtitle) => (
+          <p className="subtitle" key="index">
+            {subtitle}
+          </p>
+        ))}
         <p className="text">Open a savings account with Argent Bank today!</p>
-    </section>
-</div>
-        
-    )
-}
+      </section>
+    </div>
+  );
+};
 
 export default Herosection;
