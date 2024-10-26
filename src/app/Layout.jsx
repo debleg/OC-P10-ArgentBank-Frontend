@@ -1,10 +1,10 @@
-import Header from '../common/components/header/Header'
+import Headernav from '../common/components/headernav/Headernav'
 import Footer from '../common/components/footer/Footer';
 
 const Layout = ({ children }) => {
   return (
     <div>
-      <Header />
+      <Headernav />
       {children}
       <Footer />
     </div>
