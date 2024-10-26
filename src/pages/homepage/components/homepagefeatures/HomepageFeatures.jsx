@@ -31,6 +31,7 @@ const homepageFeatures = [
 const HomepageFeatures = () => {
   return (
     <section className="features">
+      <h2 className="sr-only">Features</h2>
       {homepageFeatures.map((feature) => (
         <div className="feature-item" key={feature.imageAlt}>
           <img
