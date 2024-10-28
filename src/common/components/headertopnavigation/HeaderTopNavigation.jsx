@@ -7,6 +7,7 @@ const HeaderTopNavigation = () => {
     <nav className="main-nav">
       <NavLink className="main-nav-logo"  to="/">
         <Logo />
+        <h1 className="sr-only">Argent Bank</h1>
       </NavLink>
       <div>
         <NavLink className={({ isActive }) =>
