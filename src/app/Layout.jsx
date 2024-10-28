@@ -3,7 +3,7 @@ import Footer from '../common/components/footer/Footer';
 
 const Layout = ({ children }) => {
   return (
-    <div>
+    <div className='body-layout'>
       <HeaderTopNavigation />
       {children}
       <Footer />
