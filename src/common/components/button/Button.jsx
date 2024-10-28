@@ -1,7 +1,7 @@
 import "./button.css"
 
-const Button = ({type, text}) => {
-  return <button type={type}>{text}</button>;
+const Button = ({className, type, text}) => {
+  return <button className={className} type={type}>{text}</button>;
 };
 
 export default Button;
