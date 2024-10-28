@@ -1,3 +1,5 @@
+import InputGeneral from "../../common/components/inputgeneral/InputGeneral"
+import InputCheckbox from "../../common/components/inputcheckbox/InputCheckbox";
 import Button from "../../common/components/button/Button";
 import "./login.css"
 
@@ -9,7 +11,10 @@ const Login = () => {
         <i className="fa fa-user-circle sign-in-icon"></i>
         <h1>Sign In</h1>
         <form>
-        <Button className="sign-in-button" type="submit" text="Sign in" />
+            <InputGeneral inputType="text" inputID="username" labelText="Username"/>
+            <InputGeneral inputType="password" inputID="password" labelText="Password"/>
+            <InputCheckbox inputID="remember-me" labelText="Remember me"/>
+            <Button className="sign-in-button" type="submit" text="Sign in" />
         </form>
       </section>
     </main>
