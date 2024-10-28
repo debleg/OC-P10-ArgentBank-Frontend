@@ -1,4 +1,6 @@
-const Button = (type, text) => {
+import "./button.css"
+
+const Button = ({type, text}) => {
   return <button type={type}>{text}</button>;
 };
 
