@@ -5,11 +5,13 @@ import { NavLink } from "react-router-dom";
 const HeaderTopNavigation = () => {
   return (
     <nav className="main-nav">
-      <NavLink className="main-nav-logo" to="/">
+      <NavLink className="main-nav-logo"  to="/">
         <Logo />
       </NavLink>
       <div>
-        <NavLink to="/" className="main-nav-item">
+        <NavLink className={({ isActive }) =>
+    `main-nav-item ${isActive ? "router-link-exact-active" : ""}`
+  } to="/sign-in">
           <i className="fa fa-user-circle"></i>
           {' '}Sign In{' '}
         </NavLink>
