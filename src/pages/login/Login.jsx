@@ -25,24 +25,29 @@ const Login = () => {
         body: JSON.stringify({ email, password }),
       });
       const data = await response.json();
-      //the storage type is determined by the "Remember me" checkbox (Remember => local, else => session)
-      if (data.token && !remember) {
-        localStorage.setItem("token", data.token);
+      
+      //using data.status instead of response.status due to nesting in api response
+      if (data.status === 200) {
+        if (data.body.token) {
+          //the storage type is determined by the "Remember me" checkbox (remember = false initially)
+          if (!remember) {
+            sessionStorage.setItem("token", data.body.token);
+          } else {
+            localStorage.setItem("token", data.body.token);
+          }
+        }
+        navigate("/user");
       } else {
-        sessionStorage.setItem("token", data.token);
-      }
-      switch (response.status) {
-        case 200:
-          navigate("/user");
-          break;
-        case 400:
-          alert("Please check your email and password");
-          break;
-        case 500:
-          alert("There was an error with the server, please try again later");
-          break;
-        default:
-          alert("Something went wrong, please try again later");
+        switch (data.status) {
+          case 400:
+            alert("Please check your email and password");
+            break;
+          case 500:
+            alert("There was an error with the server, please try again later");
+            break;
+          default:
+            alert("Something went wrong, please try again later");
+        }
       }
     } catch (error) {
       console.log("The following error occurred: ", error);
