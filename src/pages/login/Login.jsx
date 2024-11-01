@@ -3,21 +3,50 @@ import InputGeneral from "../../common/components/inputgeneral/InputGeneral";
 import InputCheckbox from "../../common/components/inputcheckbox/InputCheckbox";
 import Button from "../../common/components/button/Button";
 import "./login.css";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
+  const navigate = useNavigate();
 
-  //use navigate but also only on formsubmit
-  
   const toggleCheckbox = () => {
     setRemember((prevState) => !prevState);
     console.log(`the checkbox is ${!remember ? "checked" : "not checked"}`);
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form is submitted", email, password);
+    try {
+      const response = await fetch("http://localhost:3001/api/v1/user/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await response.json();
+      //the storage type is determined by the "Remember me" checkbox (Remember => local, else => session)
+      if (data.token && !remember) {
+        localStorage.setItem("token", data.token);
+      } else {
+        sessionStorage.setItem("token", data.token);
+      }
+      switch (response.status) {
+        case 200:
+          navigate("/user");
+          break;
+        case 400:
+          alert("Please check your email and password");
+          break;
+        case 500:
+          alert("There was an error with the server, please try again later");
+          break;
+        default:
+          alert("Something went wrong, please try again later");
+      }
+    } catch (error) {
+      console.log("The following error occurred: ", error);
+    }
   };
 
   return (
