@@ -12,14 +12,14 @@ const HeaderTopNavigation = ({ token, user }) => {
         <h1 className="sr-only">Argent Bank</h1>
       </NavLink>
       <div>
-        {token && (
+        {token && user && (
           <NavLink
             className={({ isActive }) =>
               `main-nav-item ${isActive ? "router-link-exact-active" : ""}`
             }
             to="/user"
           >
-            <i className="fa fa-user-circle"></i> User{" "}
+            <i className="fa fa-user-circle"></i> {" "}{user.firstName}{" "}
           </NavLink>
         )}
         {token && (
