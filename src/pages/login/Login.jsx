@@ -37,6 +37,7 @@ const Login = () => {
           }
         }
         navigate("/user");
+        window.location.reload();
       } else {
         switch (data.status) {
           case 400:

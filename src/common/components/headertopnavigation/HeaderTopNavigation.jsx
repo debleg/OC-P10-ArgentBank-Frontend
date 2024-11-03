@@ -1,10 +1,19 @@
 import Logo from "../logo/Logo";
 import "./headertopnavigation.css";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const HeaderTopNavigation = ({ token, user }) => {
-  //needs conditions to show specific ones based on state/token
-  //needs logout on link click
+  const navigate = useNavigate();
+
+  const signOut = (e) => {
+    e.preventDefault();
+    localStorage.removeItem("token");
+    sessionStorage.removeItem("token");
+    navigate("/");
+    // fix the reload with Redux later!!
+    window.location.reload();
+  };
+
   return (
     <nav className="main-nav">
       <NavLink className="main-nav-logo" to="/">
@@ -19,11 +28,11 @@ const HeaderTopNavigation = ({ token, user }) => {
             }
             to="/user"
           >
-            <i className="fa fa-user-circle"></i> {" "}{user.firstName}{" "}
+            <i className="fa fa-user-circle"></i> {user.firstName}{" "}
           </NavLink>
         )}
         {token && (
-          <NavLink className="main-nav-item" to="/">
+          <NavLink className="main-nav-item" onClick={signOut}>
             <i className="fa fa-sign-out"></i> Sign Out{" "}
           </NavLink>
         )}
