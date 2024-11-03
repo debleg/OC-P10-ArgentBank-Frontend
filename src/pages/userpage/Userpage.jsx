@@ -1,10 +1,15 @@
 import { useState } from "react";
 import Button from "../../common/components/button/Button";
-import "./userpage.css"
 import TransactionCard from "./components/transactioncard/TransactionCard";
+import UsernameForm from "./components/usernameform/UsernameForm";
+import "./userpage.css";
 
 const Userpage = () => {
-  const [user, setUser] = useState("user");
+  const [editMode, setEditMode] = useState(false);
+
+  const toggleVisibility = () => {
+    setEditMode((prevState) => !prevState);
+  };
 
   const transactions = [
     {
@@ -26,18 +31,31 @@ const Userpage = () => {
 
   return (
     <main className="main bg-dark">
-      <div className="header">
+      <div className={`header ${editMode ? "hidden" : "visible"}`}>
         <h1>
           Welcome back <br />
-          {user}
+          USER
         </h1>
-        <Button className="edit-button" type="button" text="Edit Name" />
+        <Button
+          className="edit-button"
+          type="button"
+          text="Edit Name"
+          onClick={toggleVisibility}
+        />
       </div>
+      <UsernameForm
+        className={`edit-user-info ${editMode ? "visible" : "hidden"}`}
+        onClick={toggleVisibility}
+      />
       <h2 className="sr-only">Accounts</h2>
       {transactions.map((transaction, index) => (
-         <TransactionCard key={index} title={transaction.title} amount={transaction.amount} description={transaction.description} />
+        <TransactionCard
+          key={index}
+          title={transaction.title}
+          amount={transaction.amount}
+          description={transaction.description}
+        />
       ))}
-     
     </main>
   );
 };

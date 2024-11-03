@@ -1,0 +1,33 @@
+.edit-user-header {
+    margin: 0 0 1rem 0;
+  }
+
+  .edit-user-info {
+    box-sizing: border-box;
+    background-color: white;
+    width: 300px;
+    margin: 0 auto;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    padding: 2rem;
+  }
+
+  .edit-user-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .edit-button-form {
+    display: block;
+    width: 100%;
+    padding: 8px;
+    font-size: 1.1rem;
+    margin-top: 1rem;
+  }
+
+  input:disabled {
+    color: #999999;
+    background-color: #DDDDDD;
+  }

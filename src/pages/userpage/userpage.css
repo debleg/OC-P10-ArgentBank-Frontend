@@ -8,3 +8,11 @@
     color: #fff;
     margin-bottom: 2rem;
   }
+
+  .visible {
+    display:block
+  }
+
+  .hidden {
+    display: none;
+  }
