@@ -2,16 +2,28 @@ import { useState } from "react";
 import Button from "../../../../common/components/button/Button";
 import InputGeneral from "../../../../common/components/inputgeneral/InputGeneral";
 import "./usernameform.css";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { changeUsername } from "../../../../features/User/userSlice";
 
 const UsernameForm = ({ className, onClick }) => {
   const userName = useSelector(state => state.user.userName)
   const firstName = useSelector(state => state.user.firstName)
   const lastName = useSelector(state => state.user.lastName)
-  const [newUsername, setNewUsername] = useState("userName");
+  const token = useSelector(state => state.login.token)
+  const dispatch = useDispatch();
+  const [newUsername, setNewUsername] = useState(userName);
   //initially, the username needs to be the original one, then be replaced in the field by what the user inputs!
-  const editUser = () => {
-    console.log(newUsername);
+  const editUser = async (e) => {
+    e.preventDefault();
+    try {
+      const resultAction = await dispatch(changeUsername({ token, newUsername }));
+      if (changeUsername.fulfilled.match(resultAction)) {
+        console.log("Username changed successfully:", resultAction.payload.userName);
+      }
+
+    } catch (error) {
+      console.log("Username change failed:", error)
+    }
   };
 
   return (
@@ -22,7 +34,7 @@ const UsernameForm = ({ className, onClick }) => {
           inputType="text"
           inputID="username"
           labelText="User Name"
-          value={userName}
+          value={newUsername}
           onChange={(e) => setNewUsername(e.target.value)}
         />
         <InputGeneral

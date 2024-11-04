@@ -15,6 +15,23 @@ export const userData = createAsyncThunk("user/userData", async ({ token }) => {
   throw new Error(data.status.toString());
 });
 
+
+export const changeUsername = createAsyncThunk("user/changeUsername", async ({token, newUsername}) => {
+    const response = await fetch("http://localhost:3001/api/v1/user/profile", {
+        method: "PUT",
+        headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userName: newUsername })
+    });
+    const data = await response.json();
+    if (data.status === 200) {
+        return data.body;
+    }
+    throw new Error (data.status.toString())
+})
+
 export const userSlice = createSlice({
   name: "user",
   initialState: {
@@ -22,6 +39,7 @@ export const userSlice = createSlice({
     firstName: null,
     lastName: null,
     userName: null,
+    loading: false,
     error: null,
   },
   reducers: {
@@ -49,11 +67,24 @@ export const userSlice = createSlice({
       .addCase(userData.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-      });
+      })
+      .addCase(changeUsername.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(changeUsername.fulfilled, (state, action) => {
+        state.loading = false;
+        state.userName = action.payload.userName;
+      })
+      .addCase(changeUsername.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
   },
 });
 
 // also needs username change
 
-export const { getUserData, clearUserData, changeUserName } = userSlice.actions;
+export const { getUserData, clearUserData } = userSlice.actions;
+
 export default userSlice.reducer;
