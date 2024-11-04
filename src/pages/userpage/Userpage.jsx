@@ -3,6 +3,7 @@ import Button from "../../common/components/button/Button";
 import TransactionCard from "./components/transactioncard/TransactionCard";
 import UsernameForm from "./components/usernameform/UsernameForm";
 import "./userpage.css";
+import User from "../../features/User/User";
 
 const Userpage = () => {
   const [editMode, setEditMode] = useState(false);
@@ -32,10 +33,7 @@ const Userpage = () => {
   return (
     <main className="main bg-dark">
       <div className={`header ${editMode ? "hidden" : "visible"}`}>
-        <h1>
-          Welcome back <br />
-          USER
-        </h1>
+    <User/>
         <Button
           className="edit-button"
           type="button"

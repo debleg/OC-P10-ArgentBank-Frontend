@@ -1,54 +1,33 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { userData } from "./userSlice";
 
 const User = () => {
-  const [user, setUser] = useState(null);
+  const dispatch = useDispatch();
+  const { firstName } = useSelector((state) => state.user);
+  const { token } = useSelector((state) => state.login);
 
   useEffect(() => {
-    const fetchUserInfo = async (token) => {
-      try {
-        const response = await fetch(
-          "http://localhost:3001/api/v1/user/profile",
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        const data = await response.json();
+    const fetchUserInfo = async () => {
 
-        //using data.status instead of response.status due to nesting in api response
-        if (data.status === 200) {
-          const { email, firstName, lastName, userName } = data.body;
-          setUser({ email, firstName, lastName, userName });
-        } else {
-          switch (data.status) {
-            case 400:
-              console.log("Invalid Token");
-              break;
-            case 500:
-              console.log("Internal Server Error");
-              break;
-            default:
-              console.log("An error occurred");
-          }
+      if (token) {
+        try {
+          await dispatch(userData({ token }));
+        } catch (error) {
+          console.log("User information retrieval failed", error);
         }
-      } catch (error) {
-        console.log("The following error occurred: ", error);
       }
     };
-    const sessionToken = sessionStorage.getItem("token");
-    const localToken = localStorage.getItem("token");
-    const token = sessionToken || localToken;
 
-    if (token && !user) {
-      setUserToken(token);
-      fetchUserInfo(token);
-    }
-  }, [user]);
-
-
+    fetchUserInfo();
+  }, [token, dispatch]);
+  return (
+    <>{firstName && <h1>
+      Welcome back <br />
+      {firstName}
+    </h1>}
+    </>
+  );
 };
 
 export default User;
