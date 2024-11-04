@@ -1,5 +1,6 @@
 import { useDispatch } from "react-redux";
 import { logout } from "./loginSlice";
+import { clearUserData } from "../User/userSlice";
 import { NavLink, useNavigate } from "react-router-dom";
 
 const Logout = () => {
@@ -9,6 +10,7 @@ const Logout = () => {
   const handleLogout = (e) => {
     e.preventDefault();
     dispatch(logout())
+    dispatch(clearUserData())
     navigate("/");
   };
 

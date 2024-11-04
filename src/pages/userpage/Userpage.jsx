@@ -33,7 +33,7 @@ const Userpage = () => {
   return (
     <main className="main bg-dark">
       <div className={`header ${editMode ? "hidden" : "visible"}`}>
-    <User/>
+        <User />
         <Button
           className="edit-button"
           type="button"
