@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {login} from "../Login/loginSlice"
 import InputGeneral from "../../common/components/inputgeneral/InputGeneral";
 import InputCheckbox from "../../common/components/inputcheckbox/InputCheckbox";
 import Button from "../../common/components/button/Button";
@@ -10,6 +12,8 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const {error} = useSelector((state) => state.login)
 
   const toggleCheckbox = () => {
     setRemember((prevState) => !prevState);
@@ -19,39 +23,19 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:3001/api/v1/user/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-      const data = await response.json();
-      
-      //using data.status instead of response.status due to nesting in api response
-      if (data.status === 200) {
-        if (data.body.token) {
-          //the storage type is determined by the "Remember me" checkbox (remember = false initially)
-          if (!remember) {
-            sessionStorage.setItem("token", data.body.token);
-          } else {
-            localStorage.setItem("token", data.body.token);
-          }
+        const result = await dispatch(login({ email, password})).unwrap;
+        if (result) {
+            //the storage type is determined by the "Remember me" checkbox (remember = false initially)
+            if (remember) {
+                localStorage.setItem("token", result);
+            } else {
+                sessionStorage.setItem("token", result);
+            }
         }
         navigate("/user");
-        window.location.reload();
-      } else {
-        switch (data.status) {
-          case 400:
-            alert("Please check your email and password");
-            break;
-          case 500:
-            alert("There was an error with the server, please try again later");
-            break;
-          default:
-            alert("Something went wrong, please try again later");
-        }
-      }
+
     } catch (error) {
-      console.log("The following error occurred: ", error);
+      console.log("Login failed:", error);
     }
   };
 
@@ -78,6 +62,7 @@ const Login = () => {
             onChange={toggleCheckbox}
           />
           <Button className="sign-in-button" type="submit" text="Sign in" />
+          {error && <p>Error: {error}</p>}
         </form>
   );
 };
