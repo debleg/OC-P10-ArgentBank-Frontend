@@ -56,10 +56,6 @@ const Login = () => {
   };
 
   return (
-    <main className="main bg-dark">
-      <section className="sign-in-content">
-        <i className="fa fa-user-circle sign-in-icon"></i>
-        <h1>Sign In</h1>
         <form onSubmit={handleSubmit}>
           <InputGeneral
             inputType="text"
@@ -83,8 +79,6 @@ const Login = () => {
           />
           <Button className="sign-in-button" type="submit" text="Sign in" />
         </form>
-      </section>
-    </main>
   );
 };
 
