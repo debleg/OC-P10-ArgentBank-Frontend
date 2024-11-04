@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {login} from "../Login/loginSlice"
+import { loginUser } from "../Login/loginSlice"
 import InputGeneral from "../../common/components/inputgeneral/InputGeneral";
 import InputCheckbox from "../../common/components/inputcheckbox/InputCheckbox";
 import Button from "../../common/components/button/Button";
@@ -17,22 +17,26 @@ const Login = () => {
 
   const toggleCheckbox = () => {
     setRemember((prevState) => !prevState);
-    console.log(`the checkbox is ${!remember ? "checked" : "not checked"}`);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-        const result = await dispatch(login({ email, password})).unwrap;
-        if (result) {
+        const resultAction = await dispatch(loginUser({ email, password}));
+        if (loginUser.fulfilled.match(resultAction)) {
+            const token = resultAction.payload;
             //the storage type is determined by the "Remember me" checkbox (remember = false initially)
             if (remember) {
-                localStorage.setItem("token", result);
+                localStorage.setItem("token", token);
             } else {
-                sessionStorage.setItem("token", result);
+                sessionStorage.setItem("token", token);
             }
+            navigate("/user");
+        } else {
+            console.log("Login failed:", resultAction.error.message)
         }
-        navigate("/user");
+        
+
 
     } catch (error) {
       console.log("Login failed:", error);
