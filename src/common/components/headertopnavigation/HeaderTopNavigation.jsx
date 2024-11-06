@@ -13,7 +13,7 @@ const firstName = useSelector(state => state.user.firstName)
         <Logo />
         <h1 className="sr-only">Argent Bank</h1>
       </NavLink>
-      <div>
+      <div className="main-nav-logged-in">
         {token && firstName && (
           <NavLink
             className={({ isActive }) =>
