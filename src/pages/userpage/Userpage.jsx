@@ -1,12 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "../../common/components/button/Button";
 import TransactionCard from "./components/transactioncard/TransactionCard";
 import UsernameForm from "./components/usernameform/UsernameForm";
 import "./userpage.css";
 import User from "../../features/User/User";
+import { useNavigate } from "react-router-dom";
 
 const Userpage = () => {
   const [editMode, setEditMode] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token =
+      sessionStorage.getItem("token") || localStorage.getItem("token");
+    if (!token) {
+      navigate("/");
+    }
+  });
 
   const toggleVisibility = () => {
     setEditMode((prevState) => !prevState);
@@ -29,6 +39,7 @@ const Userpage = () => {
       description: "Current Balance",
     },
   ];
+
 
   return (
     <main className="main bg-dark">
