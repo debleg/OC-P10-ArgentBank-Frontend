@@ -9,7 +9,7 @@ const UsernameForm = ({ className, onClick }) => {
   const userName = useSelector(state => state.user.userName)
   const firstName = useSelector(state => state.user.firstName)
   const lastName = useSelector(state => state.user.lastName)
-  const token = useSelector(state => state.login.token)
+  const token = sessionStorage.getItem("token") || localStorage.getItem("token");
   const dispatch = useDispatch();
   const [newUsername, setNewUsername] = useState(userName);
   //initially, the username needs to be the original one, then be replaced in the field by what the user inputs!

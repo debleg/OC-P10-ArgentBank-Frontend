@@ -5,7 +5,7 @@ import { userData } from "./userSlice";
 const User = () => {
   const dispatch = useDispatch();
   const { firstName } = useSelector((state) => state.user);
-  const { token } = useSelector((state) => state.login);
+  const token = sessionStorage.getItem("token") || localStorage.getItem("token");
 
   useEffect(() => {
     const fetchUserInfo = async () => {

@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 import {useSelector} from 'react-redux';
 
 const HeaderTopNavigation = () => {
-const token = useSelector(state => state.login.token)
+const token = sessionStorage.getItem("token") || localStorage.getItem("token");
 const firstName = useSelector(state => state.user.firstName)
   return (
     <nav className="main-nav">
