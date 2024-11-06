@@ -35,19 +35,19 @@ export const changeUsername = createAsyncThunk("user/changeUsername", async ({to
 export const userSlice = createSlice({
   name: "user",
   initialState: {
-    email: null,
-    firstName: null,
-    lastName: null,
-    userName: null,
+    email: "",
+    firstName: "",
+    lastName: "",
+    userName: "",
     loading: false,
     error: null,
   },
   reducers: {
     clearUserData: (state) => {
-      state.email = null;
-      state.firstName = null;
-      state.lastName = null;
-      state.userName = null;
+      state.email = "";
+      state.firstName = "";
+      state.lastName = "";
+      state.userName = "";
       state.error = null;
     },
   },

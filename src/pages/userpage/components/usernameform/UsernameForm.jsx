@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "../../../../common/components/button/Button";
 import InputGeneral from "../../../../common/components/inputgeneral/InputGeneral";
 import "./usernameform.css";
@@ -11,8 +11,17 @@ const UsernameForm = ({ className, onClick }) => {
   const lastName = useSelector(state => state.user.lastName)
   const token = sessionStorage.getItem("token") || localStorage.getItem("token");
   const dispatch = useDispatch();
-  const [newUsername, setNewUsername] = useState(userName);
-  //initially, the username needs to be the original one, then be replaced in the field by what the user inputs!
+  const [newUsername, setNewUsername] = useState("");
+  
+  //initially the username needs to be the original one
+  //then be replaced in the field by what the user inputs
+  //but userName is in the store through the API call and is async
+  useEffect (() => {
+    if(userName) {
+      setNewUsername(userName)
+    }
+  }, [userName])
+
   const editUser = async (e) => {
     e.preventDefault();
     try {
@@ -41,7 +50,7 @@ const UsernameForm = ({ className, onClick }) => {
           inputType="text"
           inputID="firstname"
           labelText="First Name"
-          value={firstName}
+          value= {firstName}
           disabled
         />
         <InputGeneral
