@@ -2,7 +2,7 @@ import "./homepagefeatures.css";
 import chatIcon from "../../../../assets/icon-chat.png";
 import moneyIcon from "../../../../assets/icon-money.png";
 import securityIcon from "../../../../assets/icon-security.png";
-
+import CircledIcons from "../../../../common/components/circledicons/CircledIcons";
 
 const homepageFeatures = [
   {
@@ -34,11 +34,7 @@ const HomepageFeatures = () => {
       <h2 className="sr-only">Features</h2>
       {homepageFeatures.map((feature) => (
         <div className="feature-item" key={feature.imageAlt}>
-          <img
-            src={feature.imageSource}
-            alt={feature.imageAlt}
-            className="feature-icon"
-          />
+          <CircledIcons src={feature.imageSource} alt={feature.imageAlt} />
           <h3 className="feature-item-title">{feature.headerContent}</h3>
           <p> {feature.textContent} </p>
         </div>
