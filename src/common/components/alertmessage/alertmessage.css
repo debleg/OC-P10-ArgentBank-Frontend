@@ -1,0 +1,11 @@
+.alert-message {
+  margin: 0;
+  padding-top: 0.6rem;
+}
+.alert-message-success {
+  color: green;
+}
+
+.alert-message-error {
+  color: red;
+}

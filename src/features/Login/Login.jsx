@@ -6,11 +6,13 @@ import InputCheckbox from "../../common/components/inputcheckbox/InputCheckbox";
 import Button from "../../common/components/button/Button";
 import "./login.css";
 import { useNavigate } from "react-router-dom";
+import AlertMessage from "../../common/components/alertmessage/AlertMessage";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
+  const [alertText, setAlertText] = useState("")
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const {error} = useSelector((state) => state.login)
@@ -21,6 +23,7 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setAlertText("")
     try {
         const resultAction = await dispatch(loginUser({ email, password}));
         if (loginUser.fulfilled.match(resultAction)) {
@@ -32,11 +35,21 @@ const Login = () => {
                 sessionStorage.setItem("token", token);
             }
             navigate("/user");
-        } else {
-            console.log("Login failed:", resultAction.error.message)
+        } else {           
+            console.log(error)
+            //always sends back "null" on first click, so default case, then gets the right code if you reclick without changes
+            //possible placeholder text: We could not log you in at this time, please check your email and password or try again later
+            switch (error) {
+                case "400":
+                  setAlertText("Please check your email and password");
+                  break;
+                case "500":
+                    setAlertText("There was an error with the server, please try again later");
+                  break;
+                default:
+                    setAlertText("Something went wrong, please try again later");
+              }
         }
-        
-
 
     } catch (error) {
       console.log("Login failed:", error);
@@ -46,7 +59,7 @@ const Login = () => {
   return (
         <form onSubmit={handleSubmit}>
           <InputGeneral
-            inputType="text"
+            inputType="email"
             inputID="username"
             labelText="Username"
             value={email}
@@ -65,8 +78,8 @@ const Login = () => {
             checked={remember}
             onChange={toggleCheckbox}
           />
+          {error && <AlertMessage key={alertText} alertText={alertText} alertType="error" />}
           <Button className="sign-in-button" type="submit" text="Sign in" />
-          {error && <p>Error: {error}</p>}
         </form>
   );
 };

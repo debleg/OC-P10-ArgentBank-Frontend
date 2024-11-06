@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Button from "../../../../common/components/button/Button";
 import InputGeneral from "../../../../common/components/inputgeneral/InputGeneral";
+import AlertMessage from "../../../../common/components/alertmessage/AlertMessage";
 import "./usernameform.css";
 import { useDispatch, useSelector } from "react-redux";
 import { changeUsername } from "../../../../features/User/userSlice";
@@ -11,6 +12,8 @@ const UsernameForm = ({ className, onClick }) => {
   const lastName = useSelector(state => state.user.lastName)
   const token = sessionStorage.getItem("token") || localStorage.getItem("token");
   const dispatch = useDispatch();
+  const [alertText, setAlertText] = useState("")
+  const [alertType, setAlertType] = useState("")
   const [newUsername, setNewUsername] = useState("");
   
   //initially the username needs to be the original one
@@ -24,14 +27,17 @@ const UsernameForm = ({ className, onClick }) => {
 
   const editUser = async (e) => {
     e.preventDefault();
+    setAlertText("");
     try {
       const resultAction = await dispatch(changeUsername({ token, newUsername }));
       if (changeUsername.fulfilled.match(resultAction)) {
-        console.log("Username changed successfully:", resultAction.payload.userName);
+        setAlertText("Username changed successfully")
+        setAlertType("success")
       }
 
     } catch (error) {
-      console.log("Username change failed:", error)
+      setAlertText("Username change failed:", error)
+      setAlertType("error")
     }
   };
 
@@ -60,6 +66,7 @@ const UsernameForm = ({ className, onClick }) => {
           value= {lastName}
           disabled
         />
+<AlertMessage key={alertText} alertText={alertText} alertType = {alertType}/>
         <div className="edit-user-buttons">
           <Button className="edit-button-form" type="submit" text="Save" />
           <Button
