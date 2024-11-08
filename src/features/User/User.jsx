@@ -5,12 +5,12 @@ import { userData } from "./userSlice";
 const User = () => {
   const dispatch = useDispatch();
   const { firstName } = useSelector((state) => state.user);
-  const lastName = useSelector(state => state.user.lastName)
-  const token = sessionStorage.getItem("token") || localStorage.getItem("token");
+  const lastName = useSelector((state) => state.user.lastName);
+  const token =
+    sessionStorage.getItem("token") || localStorage.getItem("token");
 
   useEffect(() => {
     const fetchUserInfo = async () => {
-
       if (token) {
         try {
           await dispatch(userData({ token }));
@@ -23,10 +23,13 @@ const User = () => {
     fetchUserInfo();
   }, [token, dispatch]);
   return (
-    <>{firstName && lastName && <h1>
-      Welcome back <br />
-      {firstName}{' '}{lastName}!
-    </h1>}
+    <>
+      {firstName && lastName && (
+        <h1>
+          Welcome back <br />
+          {firstName} {lastName}!
+        </h1>
+      )}
     </>
   );
 };

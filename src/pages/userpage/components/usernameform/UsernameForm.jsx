@@ -7,37 +7,39 @@ import { useDispatch, useSelector } from "react-redux";
 import { changeUsername } from "../../../../features/User/userSlice";
 
 const UsernameForm = ({ className, onClick }) => {
-  const userName = useSelector(state => state.user.userName)
-  const firstName = useSelector(state => state.user.firstName)
-  const lastName = useSelector(state => state.user.lastName)
-  const token = sessionStorage.getItem("token") || localStorage.getItem("token");
+  const userName = useSelector((state) => state.user.userName);
+  const firstName = useSelector((state) => state.user.firstName);
+  const lastName = useSelector((state) => state.user.lastName);
+  const token =
+    sessionStorage.getItem("token") || localStorage.getItem("token");
   const dispatch = useDispatch();
-  const [alertText, setAlertText] = useState("")
-  const [alertType, setAlertType] = useState("")
+  const [alertText, setAlertText] = useState("");
+  const [alertType, setAlertType] = useState("");
   const [newUsername, setNewUsername] = useState("");
-  
+
   //initially the username needs to be the original one
   //then be replaced in the field by what the user inputs
   //but userName is in the store through the API call and is async
-  useEffect (() => {
-    if(userName) {
-      setNewUsername(userName)
+  useEffect(() => {
+    if (userName) {
+      setNewUsername(userName);
     }
-  }, [userName])
+  }, [userName]);
 
   const editUser = async (e) => {
     e.preventDefault();
     setAlertText("");
     try {
-      const resultAction = await dispatch(changeUsername({ token, newUsername }));
+      const resultAction = await dispatch(
+        changeUsername({ token, newUsername })
+      );
       if (changeUsername.fulfilled.match(resultAction)) {
-        setAlertText("Username changed successfully")
-        setAlertType("success")
+        setAlertText("Username changed successfully");
+        setAlertType("success");
       }
-
     } catch (error) {
-      setAlertText("Username change failed:", error)
-      setAlertType("error")
+      setAlertText("Username change failed:", error);
+      setAlertType("error");
     }
   };
 
@@ -56,17 +58,21 @@ const UsernameForm = ({ className, onClick }) => {
           inputType="text"
           inputID="firstname"
           labelText="First Name"
-          value= {firstName}
+          value={firstName}
           disabled
         />
         <InputGeneral
           inputType="text"
           inputID="lastname"
           labelText="Last Name"
-          value= {lastName}
+          value={lastName}
           disabled
         />
-<AlertMessage key={alertText} alertText={alertText} alertType = {alertType}/>
+        <AlertMessage
+          key={alertText}
+          alertText={alertText}
+          alertType={alertType}
+        />
         <div className="edit-user-buttons">
           <Button className="edit-button-form" type="submit" text="Save" />
           <Button

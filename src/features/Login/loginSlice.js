@@ -6,20 +6,20 @@ export const loginUser = createAsyncThunk(
     //note: rejectWithValue is error handling for createAsyncThunk
     //replaces throw new Error, returns specific value as payload
     try {
-    const response = await fetch("http://localhost:3001/api/v1/user/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
-    const data = await response.json();
-    //using data.status instead of response.status due to nesting in api response
-    if (data.status === 200) {
-      return data.body.token;
+      const response = await fetch("http://localhost:3001/api/v1/user/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await response.json();
+      //using data.status instead of response.status due to nesting in api response
+      if (data.status === 200) {
+        return data.body.token;
+      }
+      return rejectWithValue(data.status.toString());
+    } catch {
+      return rejectWithValue("500");
     }
-    return rejectWithValue(data.status.toString());
-  } catch {
-    return rejectWithValue("500")
-  }
   }
 );
 
@@ -52,7 +52,7 @@ export const loginSlice = createSlice({
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.error = action.payload;
-      })
+      });
   },
 });
 

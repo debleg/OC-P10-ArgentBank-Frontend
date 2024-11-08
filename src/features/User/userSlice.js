@@ -15,22 +15,24 @@ export const userData = createAsyncThunk("user/userData", async ({ token }) => {
   throw new Error(data.status.toString());
 });
 
-
-export const changeUsername = createAsyncThunk("user/changeUsername", async ({token, newUsername}) => {
+export const changeUsername = createAsyncThunk(
+  "user/changeUsername",
+  async ({ token, newUsername }) => {
     const response = await fetch("http://localhost:3001/api/v1/user/profile", {
-        method: "PUT",
-        headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ userName: newUsername })
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ userName: newUsername }),
     });
     const data = await response.json();
     if (data.status === 200) {
-        return data.body;
+      return data.body;
     }
-    throw new Error (data.status.toString())
-})
+    throw new Error(data.status.toString());
+  }
+);
 
 export const userSlice = createSlice({
   name: "user",
@@ -79,11 +81,9 @@ export const userSlice = createSlice({
       .addCase(changeUsername.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-      })
+      });
   },
 });
-
-// also needs username change
 
 export const { getUserData, clearUserData } = userSlice.actions;
 

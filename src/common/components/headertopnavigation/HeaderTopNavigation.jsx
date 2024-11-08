@@ -2,11 +2,12 @@ import Logo from "../logo/Logo";
 import Logout from "../../../features/Login/Logout";
 import "./headertopnavigation.css";
 import { NavLink } from "react-router-dom";
-import {useSelector} from 'react-redux';
+import { useSelector } from "react-redux";
 
 const HeaderTopNavigation = () => {
-const token = sessionStorage.getItem("token") || localStorage.getItem("token");
-const firstName = useSelector(state => state.user.firstName)
+  const token =
+    sessionStorage.getItem("token") || localStorage.getItem("token");
+  const firstName = useSelector((state) => state.user.firstName);
   return (
     <nav className="main-nav">
       <NavLink className="main-nav-logo" to="/">
