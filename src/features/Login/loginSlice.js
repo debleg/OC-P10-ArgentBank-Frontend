@@ -2,7 +2,10 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 export const loginUser = createAsyncThunk(
   "login/loginUser",
-  async ({ email, password }) => {
+  async ({ email, password }, { rejectWithValue }) => {
+    //note: rejectWithValue is error handling for createAsyncThunk
+    //replaces throw new Error, returns specific value as payload
+    try {
     const response = await fetch("http://localhost:3001/api/v1/user/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -13,7 +16,10 @@ export const loginUser = createAsyncThunk(
     if (data.status === 200) {
       return data.body.token;
     }
-    throw new Error(data.status.toString());
+    return rejectWithValue(data.status.toString());
+  } catch {
+    return rejectWithValue("500")
+  }
   }
 );
 
@@ -21,6 +27,7 @@ export const loginSlice = createSlice({
   name: "login",
   initialState: {
     token: null,
+    loading: false,
     error: null,
   },
   reducers: {
@@ -44,8 +51,8 @@ export const loginSlice = createSlice({
         state.error = null;
       })
       .addCase(loginUser.rejected, (state, action) => {
-        state.error = action.error.message;
-      });
+        state.error = action.payload;
+      })
   },
 });
 
