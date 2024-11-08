@@ -8,6 +8,7 @@ const HeaderTopNavigation = () => {
   const token =
     sessionStorage.getItem("token") || localStorage.getItem("token");
   const firstName = useSelector((state) => state.user.firstName);
+
   return (
     <nav className="main-nav">
       <NavLink className="main-nav-logo" to="/">
