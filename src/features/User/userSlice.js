@@ -10,7 +10,7 @@ export const userData = createAsyncThunk("user/userData", async ({ token }) => {
   });
   const data = await response.json();
   if (data.status === 200) {
-    sessionStorage.setItem("firstName", data.body.firstName);
+    sessionStorage.setItem("userName", data.body.userName);
     return data.body;
   }
   throw new Error(data.status.toString());
@@ -29,6 +29,7 @@ export const changeUsername = createAsyncThunk(
     });
     const data = await response.json();
     if (data.status === 200) {
+      sessionStorage.setItem("userName", data.body.userName);
       return data.body;
     }
     throw new Error(data.status.toString());
@@ -39,9 +40,9 @@ export const userSlice = createSlice({
   name: "user",
   initialState: {
     email: "",
-    firstName: sessionStorage.getItem("firstName") || "",
+    firstName: "",
     lastName: "",
-    userName: "",
+    userName: sessionStorage.getItem("userName") || "",
     loading: false,
     error: null,
   },
@@ -52,7 +53,7 @@ export const userSlice = createSlice({
       state.lastName = "";
       state.userName = "";
       state.error = null;
-      sessionStorage.removeItem("firstName");
+      sessionStorage.removeItem("userName");
     },
   },
   extraReducers: (builder) => {

@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 const HeaderTopNavigation = () => {
   const token =
     sessionStorage.getItem("token") || localStorage.getItem("token");
-  const firstName = useSelector((state) => state.user.firstName);
+  const userName = useSelector((state) => state.user.userName);
 
   return (
     <nav className="main-nav">
@@ -16,14 +16,14 @@ const HeaderTopNavigation = () => {
         <h1 className="sr-only">Argent Bank</h1>
       </NavLink>
       <div className="main-nav-logged-in">
-        {token && firstName && (
+        {token && userName && (
           <NavLink
             className={({ isActive }) =>
               `main-nav-item ${isActive ? "router-link-exact-active" : ""}`
             }
             to="/user"
           >
-            <i className="fa fa-user-circle"></i> {firstName}{" "}
+            <i className="fa fa-user-circle"></i> {userName}{" "}
           </NavLink>
         )}
         {token && <Logout />}
