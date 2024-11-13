@@ -7,8 +7,10 @@ const Logout = () => {
   const location = useLocation();
   const dispatch = useDispatch();
 
-  const onLogout = handleLogout(navigate, location, dispatch)
-
+  const onLogout = (e) => {
+    e.preventDefault();
+    handleLogout(dispatch, navigate, location)
+  }
   return (
     <NavLink className="main-nav-item" onClick={onLogout}>
       <i className="fa fa-sign-out"></i> Sign Out{" "}
