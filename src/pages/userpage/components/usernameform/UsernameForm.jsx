@@ -5,18 +5,26 @@ import AlertMessage from "../../../../common/components/alertmessage/AlertMessag
 import "./usernameform.css";
 import { useDispatch, useSelector } from "react-redux";
 import { changeUsername } from "../../../../features/User/userSlice";
+import { useLocation, useNavigate } from "react-router-dom";
+import { handleLogout } from "../../../../features/Login/logoutUtils";
 
 const UsernameForm = ({ className, onClick }) => {
   const userName = useSelector((state) => state.user.userName);
   const firstName = useSelector((state) => state.user.firstName);
   const lastName = useSelector((state) => state.user.lastName);
-  const token =
-    sessionStorage.getItem("token") || localStorage.getItem("token");
+  const location = useLocation();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [alertText, setAlertText] = useState("");
   const [alertType, setAlertType] = useState("");
   const [newUsername, setNewUsername] = useState("");
+  const [invalidToken, setInvalidToken] = useState(false);
 
+  useEffect(() => {
+    if (invalidToken) {
+      handleLogout(dispatch, navigate, location);
+    }
+  });
   //initially the username needs to be the original one
   //then be replaced in the field by what the user inputs
   //but userName is in the store through the API call and is async
@@ -27,6 +35,9 @@ const UsernameForm = ({ className, onClick }) => {
   }, [userName]);
 
   const editUser = async (e) => {
+    //put token here to handle 401 case and avoid it being set from page load
+    const token =
+      sessionStorage.getItem("token") || localStorage.getItem("token");
     e.preventDefault();
     setAlertText("");
     try {
@@ -37,9 +48,16 @@ const UsernameForm = ({ className, onClick }) => {
         setAlertText("Username changed successfully");
         setAlertType("success");
       }
+      if (changeUsername.rejected.match(resultAction)) {
+        if (resultAction.error.message == 401) {
+          setInvalidToken(true);
+        } else {
+          setAlertText("Username change failed");
+          setAlertType("error");
+        }
+      }
     } catch (error) {
-      setAlertText("Username change failed:", error);
-      setAlertType("error");
+      console.log("The following error occurred", error);
     }
   };
 

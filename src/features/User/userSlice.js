@@ -13,6 +13,9 @@ export const userData = createAsyncThunk("user/userData", async ({ token }) => {
     sessionStorage.setItem("userName", data.body.userName);
     return data.body;
   }
+  if (data.status === 401) {
+    throw new Error("401");
+  }
   throw new Error(data.status.toString());
 });
 
