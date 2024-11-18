@@ -1,13 +1,21 @@
 import Logo from "../logo/Logo";
-import Logout from "../../../features/Login/Logout";
 import "./headertopnavigation.css";
-import { NavLink } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { handleLogout } from "../../../features/Login/logoutUtils";
 
 const HeaderTopNavigation = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const dispatch = useDispatch();
   const token =
     sessionStorage.getItem("token") || localStorage.getItem("token");
   const userName = useSelector((state) => state.user.userName);
+
+  const onLogout = (e) => {
+    e.preventDefault();
+    handleLogout(dispatch, navigate, location);
+  };
 
   return (
     <nav className="main-nav">
@@ -26,7 +34,11 @@ const HeaderTopNavigation = () => {
             <i className="fa fa-user-circle"></i> {userName}{" "}
           </NavLink>
         )}
-        {token && <Logout />}
+        {token && (
+          <NavLink className="main-nav-item" onClick={onLogout}>
+            <i className="fa fa-sign-out"></i> Sign Out{" "}
+          </NavLink>
+        )}
         {!token && (
           <NavLink
             className={({ isActive }) =>
